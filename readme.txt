@@ -7,11 +7,11 @@
 // use namespaces mesh variables fel hawa keda
 /* example:
 namespace views {
-int lololey
+int lololeyy
 }
 
 use in another namespace:
-views::lololey = 6;
+views::lololeyy = 6;
 */
 /* to keep constants manageable, don't use literals
 unless they couldnt be different
