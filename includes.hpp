@@ -1,2 +1,7 @@
-#define includes
-// #include glut bla bla bla
+#ifndef includes_h
+#define includes_h
+
+#include "freeglut.h"
+// code here
+
+#endif

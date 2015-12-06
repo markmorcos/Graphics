@@ -1,5 +1,8 @@
-#ifndef includes
-#include <includes.hpp>
-#endif
+#ifndef model_h
+#define model_h
 
-// state variables here, all of them
+#include "includes.hpp"
+
+// code here
+
+#endif

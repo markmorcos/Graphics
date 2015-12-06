@@ -1,5 +1,8 @@
-#ifndef includes
-#include <includes.hpp>
-#endif
+#ifndef view_h
+#define view_h
 
-// draw scene from model (state variables)
+#include "includes.hpp"
+
+// code here
+
+#endif
