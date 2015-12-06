@@ -3,6 +3,6 @@
 
 #include "includes.hpp"
 
-// code here
+namespace variables{};
 
 #endif

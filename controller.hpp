@@ -3,7 +3,9 @@
 
 #include "includes.hpp"
 
-// code here
+void generate()
+{
+}
 
 #endif
 
