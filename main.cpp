@@ -5,7 +5,6 @@
 #include "model.hpp"
 #include "view.hpp"
 
-// include any fine in another using this format
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -14,6 +13,9 @@ void keyboard(unsigned char key, int x, int y)
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_MODELVIEW);
+	//TODO
 	glutPostRedisplay();
 	glutSwapBuffers();
 	glFlush();
@@ -26,6 +28,7 @@ void idle()
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
+	generate();
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutInitWindowPosition(50, 50);
