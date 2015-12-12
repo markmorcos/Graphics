@@ -2,7 +2,8 @@
 #include "view.hpp"
 #include "controller.hpp"
 #include "audio.hpp"
-float old_time = 0;
+#include "menu.hpp"
+
 // State Variable Initializer
 void init_vars() {
 	cam.h_angle = d2r(CAM_H_ANGLE);
@@ -11,94 +12,143 @@ void init_vars() {
 	cam.c = { CAM_C_X, CAM_C_Y, CAM_C_Z };
 	cam.o = { CAM_O_X, CAM_O_Y, CAM_O_Z };
 	timestamp = 0;
-
 	generate();
+	our_state = s_menu;
+	color = 0;
 }
 
 void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	use_2d_cam();
-	kill_realism();
-	draw_background();
-	use_3d_cam();
-	use_realism();
-	draw_axes();
-	draw_grid();
-	draw_ship();
+	switch (our_state) {
+	case s_menu:
+		use_2d_cam();
+		kill_realism();
+		draw_background();
+		use_3d_cam();
+		use_realism();
+		DrawMainMenu();
+		break;
+	case s_game:
+		use_2d_cam();
+		kill_realism();
+		draw_background();
+		use_3d_cam();
+		use_realism();
+		draw_axes();
+		draw_grid();
+		draw_ship();
+		break;
+	case s_over:
+		break;
+	}
+	
+
 	glutSwapBuffers();
 	glFlush();
 }
 
 // Animation
 void anim() {
-	float new_time = glutGet(GLUT_ELAPSED_TIME);
-	if (new_time - old_time >= 5) {
-		old_time = new_time;
-		//distance += 0.1;
+	switch (our_state) {
+	case s_menu:
+		break;
+	case s_game:
+		timestamp++;
+		distance += 0.18;
+		row = (int)distance;
+		if (ypos)
+		{
+			ypos += v;
+			v -= 0.075;
+			if (ypos < 0) ypos = 0;
+		}
+		std::cout << row << '\n';
+		break;
+	case s_over:
+		break;
 	}
-	timestamp++;
-	distance += 0.18;
-	row = (int)distance;
-	if(ypos)
-	{
-		ypos += v;
-		v -= 0.075;
-		if(ypos < 0) ypos = 0;
-	}
-	std::cout << row << '\n';
+	
 	glutPostRedisplay();
-}
-
-void test_view() {
-
 }
 
 // Keyboard
 void keys(unsigned char key, int x, int y) {
-	switch (key) {
-	case('j') :
-		cam.h_angle += 0.1;
+	switch (our_state) {
+	case s_menu:
 		break;
-	case('l') :
-		cam.h_angle -= 0.1;
+		// End state
+	case s_game:
+		switch (key) {
+		case('j') :
+			cam.h_angle += 0.1;
+			break;
+		case('l') :
+			cam.h_angle -= 0.1;
+			break;
+		case('i') :
+			cam.v_angle += 0.1;
+			break;
+		case('k') :
+			cam.v_angle -= 0.1;
+			break;
+		case('u') :
+			cam.radius += 0.1;
+			break;
+		case('o') :
+			cam.radius -= 0.1;
+			break;
+		case('w') :
+			ypos += 0.1;
+			break;
+		case('s') :
+			ypos -= 0.1;
+			break;
+		case('a') :
+			xpos -= 0.1;
+			break;
+		case('d') :
+			xpos += 0.1;
+			break;
+		case('x') :
+			v = 0.5;
+			ypos = 0.001;
+			break;
+		}
 		break;
-	case('i') :
-		cam.v_angle += 0.1;
+		// End state
+	case s_over:
 		break;
-	case('k') :
-		cam.v_angle -= 0.1;
+		// End state
+	}
+
+	// glutPostRedisplay();
+}
+
+void mouse(int button, int state, int x, int y) {
+	switch (our_state) {
+	case s_menu:
+		if (x >= 542 && x <= 737 && y >= 287 && y <= 349 && state == GLUT_DOWN) {
+			color = 0.5;
+			//our_state = s_game;
+		}
+		else if (x >= 542 && x <= 737 && y >= 287 && y <= 349 && state == GLUT_UP) {
+			our_state = s_game;
+		} 
+		else {
+			color = 0;
+		}
 		break;
-	case('u') :
-		cam.radius += 0.1;
+	case s_game:
 		break;
-	case('o') :
-		cam.radius -= 0.1;
-		break;
-	case('w') :
-		ypos += 0.1;
-		break;
-	case('s') :
-		ypos -= 0.1;
-		break;
-	case('a') :
-		xpos -= 0.1;
-		break;
-	case('d') :
-		xpos += 0.1;
-		break;
-	case('x') :
-		v = 0.5;
-		ypos = 0.001;
+	case s_over:
 		break;
 	}
-	// glutPostRedisplay();
 }
 
 // Setup and Run
 void main(int argc, char** argv) {
 	// Game
 	init_vars();
-	test_view();
 	// Window
 	glutInit(&argc, argv);
 	glutInitWindowPosition(WINDOW_POS_X, WINDOW_POS_Y);
@@ -109,7 +159,8 @@ void main(int argc, char** argv) {
 	// Funcs
 	glutDisplayFunc(DISPLAY_FUNC);
 	glutIdleFunc(IDLE_FUNC);
-	glutKeyboardFunc(keys);
+	glutKeyboardFunc(KEYBOARD_FUNC);
+	glutMouseFunc(MOUSE_FUNC);
 	// Palette
 	set_light_and_material();
 	use_realism();

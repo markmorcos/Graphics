@@ -1,9 +1,9 @@
 #ifndef includes_h
 #define includes_h
-
+#include "TextureBuilder.h"
 #include <ctime>
 #include <iostream>
-#include "TextureBuilder.h"
+
 #include <math.h>
 #include <glut.h>
 
@@ -29,6 +29,8 @@
 
 #define DISPLAY_FUNC		display
 #define IDLE_FUNC			anim
+#define KEYBOARD_FUNC		keys
+#define MOUSE_FUNC			mouse
 
 #define VIEW_ANGLE			45.0f
 #define NEAR_PLANE			0.1f
@@ -56,8 +58,6 @@
 // Shortening Macros
 #define hi					glPushMatrix()
 #define bye					glPopMatrix()
-#define bgn					glBegin
-#define end					glEnd()
 #define hey_clear_first		
 #define hey_flush_last		
 #define hey_redisplay_last	
@@ -70,6 +70,12 @@
 #define cd					glTexCoord2f
 
 // Type definitions
+enum game_state {
+	s_menu,
+	s_game,
+	s_over
+};
+
 template <typename Type>
 struct triple {
 	Type x;
@@ -110,6 +116,9 @@ const GLfloat no_emission[] = { LIGHT_NO_EMISSION, LIGHT_NO_EMISSION, LIGHT_NO_E
 // State Variables
 struct cam cam;
 long long timestamp;
+game_state our_state;
+float color;
+
 
 // Spaceship
 float distance = 0;

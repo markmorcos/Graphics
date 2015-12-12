@@ -20,6 +20,7 @@
     <ClInclude Include="audio.hpp" />
     <ClInclude Include="controller.hpp" />
     <ClInclude Include="includes.hpp" />
+    <ClInclude Include="menu.hpp" />
     <ClInclude Include="model.hpp" />
     <ClInclude Include="TextureBuilder.h" />
     <ClInclude Include="view.hpp" />

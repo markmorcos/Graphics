@@ -3,8 +3,6 @@
 
 #include "includes.hpp"
 
-
-
 // Camera, Lights
 void set_light_and_material() {
 	glLightfv(GL_LIGHT0, GL_POSITION, position);
@@ -74,11 +72,11 @@ void use_3d_cam() {
 void draw_axes() {
 	hi;
 	glLineWidth(3);
-	bgn(GL_LINES);
+	glBegin(GL_LINES);
 	cl(255, 0, 0); vr(-20, 0, 0); vr(20, 0, 0);
 	cl(0, 255, 0); vr(0, -20, 0); vr(0, 20, 0);
 	cl(0, 0, 255); vr(0, 0, -20); vr(0, 0, 20);
-	end;
+	glEnd();
 	bye;
 }
 
@@ -89,19 +87,19 @@ void draw_background() {
 	float x = WINDOW_SIZE_X / 2.0f;
 	float y = WINDOW_SIZE_Y / 2.0f;
 	nr(0.0f, 0.0f, 1.0f);
-	bgn(GL_QUADS);
+	glBegin(GL_QUADS);
 	cd(0.0f, 0.0f); vr(-x, -y, 0.0f);
 	cd(1.0f, 0.0f); vr(x, -y, 0.0f);
 	cd(1.0f, 1.0f); vr(x, y, 0.0f);
 	cd(0.0f, 1.0f); vr(-x, y, 0.0f);
-	end;
+	glEnd();
 	kill_tex();
 	bye;
 }
 
 void draw_tex_triangle(pt p1, pt p2, pt p3, pt c) {
 	hi;
-	bgn(GL_TRIANGLES);
+	glBegin(GL_TRIANGLES);
 
 	nr(p1.x - c.x, p1.y - c.y, p1.z - c.z);
 	cd(0.0f, 0.0f);
@@ -115,7 +113,7 @@ void draw_tex_triangle(pt p1, pt p2, pt p3, pt c) {
 	cd(0.5f, 0.7f);
 	vr(p3.x, p3.y, p3.z);
 
-	end;
+	glEnd();
 	bye;
 }
 
@@ -148,12 +146,12 @@ void draw_ship() {
 
 void draw_tex_rect(pt p1, pt p2, pt p3, pt p4) {
 	hi;
-	bgn(GL_QUADS);
+	glBegin(GL_QUADS);
 	cd(0, 0); vr(p1.x, p1.y, p1.z);
 	cd(0, 1); vr(p2.x, p2.y, p2.z);
 	cd(1, 1); vr(p3.x, p3.y, p3.z);
 	cd(1, 0); vr(p4.x, p4.y, p4.z);
-	end;
+	glEnd();
 	bye;
 }
 
