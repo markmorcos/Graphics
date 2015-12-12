@@ -5,8 +5,8 @@
 #include <iostream>
 // #include "freeglut.h"
 
-float distance;
-float xpos, ypos;
+float distance = 0;
+float v = 0, xpos = 0, ypos = 0;
 int row = 0, column = 1;
 //const int WINDOW_WIDTH = 1000, WINDOW_HEIGHT = 750;
 const int ROWS = 1000, COLUMNS = 3;

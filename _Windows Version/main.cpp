@@ -354,6 +354,14 @@ void display(void) {
 // Animation
 void anim() {
 	timestamp++;
+	distance += 0.1;
+	if(distance == (int)distance) row = (int)distance;
+	if(ypos)
+	{
+		ypos += v;
+		v -= 0.05;
+		if(ypos < 0) ypos = 0;
+	}
 	hey_redisplay_last;
 }
 
@@ -393,6 +401,10 @@ void keys(unsigned char key, int x, int y) {
 		break;
 	case('d') :
 		xpos += 0.1;
+		break;
+	case('x') :
+		v = 0.5;
+		ypos = 0.01;
 		break;
 	}
 }
