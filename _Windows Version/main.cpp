@@ -29,6 +29,7 @@ void display(void) {
 		DrawMainMenu();
 		break;
 	case s_game:
+	case s_over:
 		use_2d_cam();
 		kill_realism();
 		draw_background();
@@ -38,8 +39,8 @@ void display(void) {
 		draw_grid();
 		draw_ship();
 		break;
-	case s_over:
-		break;
+	//case s_over:
+		//break;
 	}
 	
 
@@ -48,21 +49,37 @@ void display(void) {
 }
 
 // Animation
+
+int old_time = 0;
+
 void anim() {
+	int new_time = glutGet(GLUT_ELAPSED_TIME);
+	if (new_time - old_time < 10) return;
+	old_time = new_time;
 	switch (our_state) {
 	case s_menu:
 		break;
 	case s_game:
 		timestamp++;
-		distance += 0.18;
-		row = (int)distance;
-		if (ypos)
+		distance += 0.21 ;
+		row = (int)(distance + 0.5);
+		column = (int)xpos;
+		if (grid[row][column] == FIRE&&ypos<1.2)
+			our_state = s_over;
+		else if (grid[row][column] == HOLE&&ypos == 0) {
+			ypos -= 0.04;
+		}
+		if (ypos>0)
 		{
 			ypos += v;
 			v -= 0.075;
+			std::cout << ypos << std::endl;
 			if (ypos < 0) ypos = 0;
 		}
-		std::cout << row << '\n';
+		if (ypos<0 && ypos>-1.0)
+			ypos -= 0.04;
+		else if (ypos < -1.0)
+			our_state = s_over;
 		break;
 	case s_over:
 		break;
@@ -78,6 +95,7 @@ void keys(unsigned char key, int x, int y) {
 		break;
 		// End state
 	case s_game:
+	case s_over:
 		switch (key) {
 		case('j') :
 			cam.h_angle += 0.1;
@@ -104,20 +122,23 @@ void keys(unsigned char key, int x, int y) {
 			ypos -= 0.1;
 			break;
 		case('a') :
-			xpos -= 0.1;
+			xpos = max(xpos-1,0);
 			break;
 		case('d') :
-			xpos += 0.1;
+			xpos = min(2,xpos+1);
 			break;
 		case('x') :
-			v = 0.5;
-			ypos = 0.001;
+		case(' ') :
+			if(!ypos){
+				v = 0.5;
+				ypos = 0.001;
+			}
 			break;
 		}
 		break;
 		// End state
-	case s_over:
-		break;
+	//case s_over:
+		//break;
 		// End state
 	}
 
@@ -145,6 +166,19 @@ void mouse(int button, int state, int x, int y) {
 	}
 }
 
+void special(int key, int x, int y)
+{
+	switch (key) {
+	case GLUT_KEY_RIGHT:	
+		xpos = min(2,xpos+1);
+		break;
+	
+	case GLUT_KEY_LEFT:
+		xpos = max(0,xpos-1);
+		break;
+	}
+}
+
 // Setup and Run
 void main(int argc, char** argv) {
 	// Game
@@ -160,6 +194,7 @@ void main(int argc, char** argv) {
 	glutDisplayFunc(DISPLAY_FUNC);
 	glutIdleFunc(IDLE_FUNC);
 	glutKeyboardFunc(KEYBOARD_FUNC);
+	glutSpecialFunc(SPECIAL_FUNC);
 	glutMouseFunc(MOUSE_FUNC);
 	// Palette
 	set_light_and_material();

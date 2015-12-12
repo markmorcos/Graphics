@@ -30,6 +30,7 @@
 #define DISPLAY_FUNC		display
 #define IDLE_FUNC			anim
 #define KEYBOARD_FUNC		keys
+#define SPECIAL_FUNC		special
 #define MOUSE_FUNC			mouse
 
 #define VIEW_ANGLE			45.0f
@@ -73,7 +74,8 @@
 enum game_state {
 	s_menu,
 	s_game,
-	s_over
+	s_over,
+	s_win
 };
 
 template <typename Type>
@@ -126,7 +128,7 @@ float v = 0, xpos = 0, ypos = 0;
 int row = 0, column = 1;
 
 // Grid
-const int ROWS = 1000, COLUMNS = 3;
+const int ROWS = 200, COLUMNS = 3;
 enum type { GROUND, HOLE, FIRE };
 type grid[ROWS][COLUMNS];
 
